@@ -1,0 +1,25 @@
+{
+  "name": "Dev Container with .NET, React",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.yml"
+  ],
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 5000, 5001],
+  "postCreateCommand": "dotnet restore && npm install --prefix frontend",
+  "remoteUser": "vscode"
+}
