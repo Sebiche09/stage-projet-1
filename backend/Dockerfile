@@ -1,14 +1,11 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /app
 
+# Copier le fichier projet et restaurer les dépendances
 COPY *.csproj ./
 RUN dotnet restore
 
+# Copier le reste des fichiers et exécuter l'application
 COPY . .
-RUN dotnet publish -c Release -o /out
-
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
-WORKDIR /app
-COPY --from=build /out .
 EXPOSE 5000
-ENTRYPOINT ["dotnet", "VotreApplication.dll"]
+ENTRYPOINT ["dotnet", "run", "--no-launch-profile", "--urls", "http://0.0.0.0:5000"]
