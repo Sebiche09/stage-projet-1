@@ -67,3 +67,5 @@
 /workspaces/stage-projet-1/backend/obj/Debug/net8.0/ref/backend.dll
 /app/bin/Debug/net8.0/AutoMapper.dll
 /app/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/workspaces/stage-projet-1/backend/bin/Debug/net8.0/AutoMapper.dll
+/workspaces/stage-projet-1/backend/bin/Debug/net8.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

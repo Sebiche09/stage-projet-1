@@ -37,7 +37,24 @@ namespace backend.Controllers
         [HttpPut]
         public async Task<ActionResult<ServiceResponse<List<GetUserDto>>>> UpdateUser(UpdateUserDto updatedUser)
         {
-            return Ok(await _userService.UpdateUser(updatedUser));
+            var response = await _userService.UpdateUser(updatedUser);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetUserDto>>> DeleteUser(int id)
+        {
+            var response = await _userService.DeleteUser(id);
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+
     }
 }

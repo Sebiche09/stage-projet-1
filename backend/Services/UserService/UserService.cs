@@ -29,6 +29,28 @@ namespace backend.Services.UserService
             return ServiceResponse;
         }
 
+        public async Task<ServiceResponse<List<GetUserDto>>> DeleteUser(int id)
+        {
+            var ServiceResponse = new ServiceResponse<List<GetUserDto>>();
+            try 
+            {
+            var user = users.FirstOrDefault(c => c.Id == id);
+            if (user == null){
+                throw new Exception("User with id" + id + "not found");
+            }
+            users.Remove(user);
+            
+            
+            ServiceResponse.Data = users.Select(c => _mapper.Map<GetUserDto>(c)).ToList();
+            }
+            catch(Exception ex)
+            {
+                ServiceResponse.Success = false;
+                ServiceResponse.Message = ex.Message;
+            }
+            return ServiceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetUserDto>>> GetAllUsers()
         {
             var ServiceResponse = new ServiceResponse<List<GetUserDto>>();
@@ -48,15 +70,25 @@ namespace backend.Services.UserService
         public async Task<ServiceResponse<GetUserDto>> UpdateUser(UpdateUserDto updatedUser)
         {
             var ServiceResponse = new ServiceResponse<GetUserDto>();
+            try 
+            {
             var user = users.FirstOrDefault(c => c.Id == updatedUser.Id);
-
+            if (user == null){
+                throw new Exception("User with id" + updatedUser.Id + "not found");
+            }
+            _mapper.Map(updatedUser, user);
             user.Username = updatedUser.Username;
             user.Password = updatedUser.Password;
             user.Email = updatedUser.Email;
             user.Phone = updatedUser.Phone;
             
             ServiceResponse.Data = _mapper.Map<GetUserDto>(user);
-
+            }
+            catch(Exception ex)
+            {
+                ServiceResponse.Success = false;
+                ServiceResponse.Message = ex.Message;
+            }
             return ServiceResponse;
         }
     }
