@@ -10,6 +10,13 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5000
       - ASPNETCORE_ENVIRONMENT=Development
+      - DB_HOST=localhost
+      - DB_PORT=1433
+      - DB_NAME=projet
+      - DB_USER=sa
+      - DB_PASSWORD=Root@1234
+    depends_on:
+      - mssql
 
   frontend:
     build:
@@ -19,6 +26,23 @@ services:
       - "3000:80"
     networks:
       - app-network
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: mssql_container
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Root@1234
+      - MSSQL_PID=Express
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:
 
 networks:
   app-network:

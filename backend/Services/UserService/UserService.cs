@@ -11,12 +11,10 @@ namespace backend.Services.UserService
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
+        public UserService(IMapper mapper, DataContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             
         }
