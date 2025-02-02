@@ -23,9 +23,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "3000:3000"  
     networks:
       - app-network
+    volumes:
+      - ./frontend:/app 
+      - /app/node_modules  
+    command: ["npm", "run", "dev"]
 
   mssql:
     image: mcr.microsoft.com/mssql/server:latest
