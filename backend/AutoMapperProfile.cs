@@ -12,6 +12,11 @@ namespace backend
             CreateMap<User, GetUserDto>();
             CreateMap<AddUserDto, User>();
             CreateMap<UpdateUserDto, User>();
+
+            CreateMap<Post, GetPostDto>();
+            CreateMap<GetPostDto, Post>();
+            CreateMap<UpdatePostDto, Post>();
+
         }
     }
 }
