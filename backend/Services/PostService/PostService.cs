@@ -20,14 +20,36 @@ namespace backend.Services.PostService
         }
         public async Task<ServiceResponse<List<GetPostDto>>> AddPost(AddPostDto newPost)
         {
-            var ServiceResponse = new ServiceResponse<List<GetPostDto>>();
+            var serviceResponse = new ServiceResponse<List<GetPostDto>>();
+
+            var user = await _context.Users.FindAsync(newPost.UserId);
+            if (user == null)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Utilisateur non trouvé.";
+                return serviceResponse;
+            }
             var post = _mapper.Map<Post>(newPost);
             
+            post.UserId = newPost.UserId;
+            post.User = user;
+
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
-            ServiceResponse.Data = await _context.Posts.Select(c => _mapper.Map<GetPostDto>(c)).ToListAsync();
-            return ServiceResponse;
+            serviceResponse.Data = await _context.Posts
+                .Include(p => p.User) 
+                .Select(p => new GetPostDto
+                {
+                    Id = p.Id,
+                    Description = p.Description,
+                    Like = p.Like,
+                    UserId = p.UserId,
+                    Username = p.User != null ? p.User.Username : "Utilisateur inconnu"
+                })
+                .ToListAsync();
+
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<GetPostDto>>> DeletePost(int id)
@@ -55,20 +77,55 @@ namespace backend.Services.PostService
 
         public async Task<ServiceResponse<List<GetPostDto>>> GetAllPosts()
         {
-            var ServiceResponse = new ServiceResponse<List<GetPostDto>>();
-            var dbPosts = await _context.Posts.ToListAsync();
-            ServiceResponse.Data = dbPosts.Select(c => _mapper.Map<GetPostDto>(c)).ToList();
-            return ServiceResponse;
+            var serviceResponse = new ServiceResponse<List<GetPostDto>>();
+
+            var dbPosts = await _context.Posts
+                .Include(p => p.User) 
+                .ToListAsync();
+
+            serviceResponse.Data = dbPosts.Select(p => new GetPostDto
+            {
+                Id = p.Id,
+                Description = p.Description,
+                Like = p.Like,
+                UserId = p.UserId, 
+                Username = p.User != null ? p.User.Username : "Utilisateur inconnu"
+            }).ToList();
+
+            return serviceResponse;
         }
 
-        public async Task<ServiceResponse<GetPostDto>> GetPostById(int id)
-        {
-            var ServiceResponse = new ServiceResponse<GetPostDto>();
-            var dbPost = await _context.Posts.FirstOrDefaultAsync(c => c.Id == id);
-            ServiceResponse.Data = _mapper.Map<GetPostDto>(dbPost);
-            return ServiceResponse;
-            
+
+        public async Task<ServiceResponse<List<GetPostDto>>> GetPostsByUserId(int userId)
+        {       
+            var serviceResponse = new ServiceResponse<List<GetPostDto>>();
+
+            var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
+            if (!userExists)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = "Utilisateur non trouvé.";
+                return serviceResponse;
+            }
+
+            var dbPosts = await _context.Posts
+                .Where(p => p.UserId == userId)
+                .Include(p => p.User)
+                .ToListAsync();
+
+            serviceResponse.Data = dbPosts.Select(p => new GetPostDto
+            {
+                Id = p.Id,
+                Description = p.Description,
+                Like = p.Like,
+                UserId = p.UserId,
+                Username = p.User != null ? p.User.Username : "Utilisateur inconnu"
+            }).ToList();
+
+            return serviceResponse;
         }
+
+
 
         public async Task<ServiceResponse<GetPostDto>> UpdatePost(UpdatePostDto updatedPost)
         {
@@ -93,5 +150,7 @@ namespace backend.Services.PostService
             }
             return ServiceResponse;
         }
+
+        
     }
 }

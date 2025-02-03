@@ -22,10 +22,10 @@ namespace backend.Controllers
         {
             return Ok(await _postService.GetAllPosts());
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<GetPostDto>>> GetSingle(int id)
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<ServiceResponse<List<GetPostDto>>>> GetPostsByUser(int userId)
         {
-            return Ok(await _postService.GetPostById(id));
+            return Ok(await _postService.GetPostsByUserId(userId));
         }
 
         [HttpPost]

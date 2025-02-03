@@ -11,8 +11,10 @@ namespace backend.Models
     {
         [Key]
         public int Id { get; set; } 
-        public string Description { get; set; } = "admin";
-        public int Like { get; set; } = 2;
+        public string Description { get; set; } = string.Empty;
+        public int Like { get; set; } = 0;
+        
+        [ForeignKey("User")]
         public int UserId { get; set; }
         public User? User { get; set; }
         

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function AddUser() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -10,19 +10,14 @@ export default function AddUser() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newUser = { name, email, phone };
+    const newUser = { username, email, phone };
 
-    try {
-      const response = await axios.post("https://jsonplaceholder.typicode.com/users", newUser);
-      console.log("Utilisateur ajouté :", response.data);
-      setMessage("Utilisateur ajouté avec succès !");
-      setName("");
-      setEmail("");
-      setPhone("");
-    } catch (error) {
-      console.error("Erreur lors de l'ajout :", error);
-      setMessage("Une erreur est survenue.");
-    }
+    const response = await axios.post("http://localhost:5000/api/user", newUser);
+    console.log("Utilisateur ajouté :", response.data);
+    setMessage("Utilisateur ajouté avec succès !");
+    setUsername("");
+    setEmail("");
+    setPhone("");
   };
 
   return (
@@ -33,8 +28,8 @@ export default function AddUser() {
           <label className="block text-gray-700 font-semibold mb-2">Nom</label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="w-full p-2 border rounded-md"
             required
           />

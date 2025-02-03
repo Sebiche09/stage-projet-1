@@ -8,8 +8,9 @@ namespace backend.Dtos.Post
     public class UpdatePostDto
     {
         public int Id { get; set; } 
-        public string Description { get; set; } = "admin";
-        public int Like { get; set; } = 2;
+        public string Description { get; set; } = string.Empty;
+        public int Like { get; set; } = 0;
+        public string UserId { get; set; } = string.Empty;
         
     }
 }

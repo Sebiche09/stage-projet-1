@@ -9,7 +9,6 @@ namespace backend.Models
     {
         public int Id { get; set; } 
         public string Username { get; set; } = "admin";
-        public string Password { get; set; } = "admin";
         public string Email { get; set; } = "test";
         public string Phone { get; set; } = "test";
 

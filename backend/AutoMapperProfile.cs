@@ -14,7 +14,7 @@ namespace backend
             CreateMap<UpdateUserDto, User>();
 
             CreateMap<Post, GetPostDto>();
-            CreateMap<GetPostDto, Post>();
+            CreateMap<AddPostDto, Post>();
             CreateMap<UpdatePostDto, Post>();
 
         }

@@ -83,7 +83,6 @@ namespace backend.Services.UserService
             }
             _mapper.Map(updatedUser, user);
             user.Username = updatedUser.Username;
-            user.Password = updatedUser.Password;
             user.Email = updatedUser.Email;
             user.Phone = updatedUser.Phone;
             

@@ -7,8 +7,8 @@ namespace backend.Dtos.Post
 {
     public class AddPostDto
     {
-        public string Description { get; set; } = "admin";
-        public int Like { get; set; } = 2;
-        
+        public string Description { get; set; } = string.Empty;
+        public int Like { get; set; } = 0;
+        public int UserId { get; set; } 
     }
 }
